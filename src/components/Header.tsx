@@ -1,6 +1,7 @@
 import { GambaModalButton } from 'gamba/react-ui'
 import React from 'react'
 import { FaFacebook, FaDiscord, FaGithub, FaTwitter, FaInstagram } from 'react-icons/fa'
+import { TbWorldWww } from 'react-icons/tb'
 import { NavLink } from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -66,6 +67,9 @@ export function Header() {
         <div className="label">SKB Gaming</div>
       </NavigationLink>
       <Links>
+         <a target="_blank" href="https://www.solkillerbunnies.io/" rel="noreferrer">
+          <TbWorldWww />
+        </a>
         <a target="_blank" href="https://twitter.com/skb_nft" rel="noreferrer">
           <FaTwitter />
         </a>
