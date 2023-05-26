@@ -3,10 +3,10 @@ import React from 'react'
 import image from './image.png'
 
 export default {
-  name: 'Mines',
-  short_name: 'mines',
+  name: 'SKB Mines',
+  short_name: 'skbmines',
   description: '',
-  creator: 'DwRFGbjKbsEhUMe5at3qWvH7i8dAJyhhwdnFoZMnLVRV',
+  creator: 'FYS2cqreFwXzxi6HZsDWp3m2vjoCGWjGe6HKhRbxLp45',
   theme_color: '#ff6a6a',
   image,
   app: React.lazy(() => import('./App')),
