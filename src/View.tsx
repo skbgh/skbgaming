@@ -47,12 +47,7 @@ function Details({ game }: {game?: GameBundle}) {
           <Section>
             <h1>SKB Gaming</h1>
             <div>
-              A decentralized, provably-fair casino built on <a target="_blank" href="https://github.com/gamba-labs/gamba" rel="noreferrer">gamba</a>.
-            </div>
-            <div style={{ display: 'flex', gap: '20px' }}>
-              <Button onClick={() => window.open('https://twitter.com/gambalabs', '_blank')}>
-                Read More
-              </Button>
+              A decentralized, provably-fair casino built on gamba.
             </div>
           </Section>
         )}
