@@ -2,10 +2,10 @@ import React from 'react'
 import image from './image.png'
 
 export default {
-  name: 'Slots',
-  short_name: 'slots',
+  name: 'SKB Slots',
+  short_name: 'skbslots',
   description: '',
-  creator: 'DwRFGbjKbsEhUMe5at3qWvH7i8dAJyhhwdnFoZMnLVRV',
+  creator: 'CCJqzXTgZPTHKaRwAn3wMaec87FcYYeW1mvwuXMhqHQr',
   image,
   theme_color: '#ad6bff',
   app: React.lazy(() => import('./App')),
