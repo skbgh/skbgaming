@@ -2,10 +2,10 @@ import React from 'react'
 import image from './image.png'
 
 export default {
-  name: 'Flip',
-  short_name: 'flip',
+  name: 'SKB Flip',
+  short_name: 'skbflip',
   description: '',
-  creator: 'DwRFGbjKbsEhUMe5at3qWvH7i8dAJyhhwdnFoZMnLVRV',
+  creator: '3wHhNeDcK69AsPQnFJ6buzA15y8MtdTmX2zkDEABr7c7',
   image,
   theme_color: '#ad6bff',
   app: React.lazy(() => import('./App')),
