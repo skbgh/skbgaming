@@ -47,7 +47,7 @@ function Details({ game }: {game?: GameBundle}) {
           <Section>
             <h1>SKB Gaming</h1>
             <div>
-              A decentralized, provably-fair casino built on gamba.
+              A decentralized, provably-fair gaming built on gamba.
             </div>
           </Section>
         )}
