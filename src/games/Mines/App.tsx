@@ -13,7 +13,7 @@ const GRID_SIZE = 25
 const MINE_COUNT = 5
 
 const MINE_SELECT = [1, 3, 5, 10, 15, 20, 24]
-const WAGER_AMOUNTS = [0.05, 0.1, 0.25, 0.5, 1, 3].map(solToLamports)
+const WAGER_AMOUNTS = [0.01, 0.05, 0.1, 0.25, 0.5, 1, 3].map(solToLamports)
 
 const createSound = (url: string) =>
   new Tone.Player({ url }).toDestination()
