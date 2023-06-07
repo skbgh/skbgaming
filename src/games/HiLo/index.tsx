@@ -5,7 +5,7 @@ export default {
   name: 'HiLo',
   short_name: 'hilo',
   description: '',
-  creator: 'DwRFGbjKbsEhUMe5at3qWvH7i8dAJyhhwdnFoZMnLVRV',
+  creator: '7rdwG1fmii5PmbKuu78sKv1bH96ksTtmqnV6M8ftDnUs',
   image,
   app: React.lazy(() => import('./App')),
 }
