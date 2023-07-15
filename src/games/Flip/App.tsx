@@ -16,7 +16,6 @@ import tailsSrc from './tails.png'
 import winSrc from './win.wav'
 
 const WAGER_AMOUNTS = [
-  0.01,
   0.05,
   0.1,
   0.25,
