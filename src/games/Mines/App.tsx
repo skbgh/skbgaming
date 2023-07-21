@@ -1,10 +1,10 @@
 import { solToLamports, lam} from 'gamba'
 import { useGamba } from 'gamba/react'
 import { ActionBar, Button, ResponsiveSize, formatLamports } from 'gamba/react-ui'
-import React, { useMemo, useState } from 'react'
+import React, { useMemo, useState, useEffect } from 'react'
 import * as Tone from 'tone'
 import { Dropdown } from '../../components/Dropdown'
-import { Cell, Container, Grid, Overlay, OverlayText } from './styles'
+import { Cell, Container, Grid, Overlay, OverlayText, MultiplierCurrent, MultiplierWrapper } from './styles'
 import winSrc from './win.mp3'
 import tickSrc from './tick.mp3'
 import loseSrc from './lose.mp3'
@@ -30,29 +30,40 @@ function Mines() {
   const [unclickedSquares, setUnclickedSquares] = useState(GRID_SIZE)
   const [loading, setLoading] = useState(false)
   const [mines, setMines] = useState(MINE_COUNT)
-  const [firstPlay, setFirstPlay] = useState(true)
   const [claiming, setClaiming] = useState(false)
   const [wager, setWager] = useState(WAGER_AMOUNTS[0])
   const [playbackRate, setPlaybackRate] = useState(1)
+  const [multipliers, setMultipliers] = useState(() => calculateMultipliers(GRID_SIZE, MINE_COUNT))
+  const [currentMultiplierIndex, setCurrentMultiplierIndex] = useState(0)
+  const [totalGain, setTotalGain] = useState(0)
+  const [gameState, setGameState] = useState('idle') // idle, playing, lost
 
   const playWinSound = () => {
     soundWin.playbackRate = playbackRate
     soundWin.start()
   }
 
-  const hasClaimableBalance = gamba.balances.user > 0
+  useEffect(() => {
+    setMultipliers(calculateMultipliers(unclickedSquares, mines))
+  }, [mines])
 
-  const resetGame = async () => {
+  const claim = async () => {
     if (gamba.balances.user > 0) {
       setClaiming(true)
       await gamba.withdraw()
       setClaiming(false)
     }
+    setGameState('lost')
+  }
+
+  const reset = async () => {
     setGrid(generateGrid())
     setUnclickedSquares(GRID_SIZE)
     setLoading(false)
-    setFirstPlay(true)
+    setGameState('idle')
     setPlaybackRate(1)
+    setCurrentMultiplierIndex(0)
+    setTotalGain(0)
   }
 
   const multiplier = useMemo(() => {
@@ -79,16 +90,19 @@ function Mines() {
       }
 
       let wagerInput = wager
+      let res
 
-      if (!firstPlay) {
-        wagerInput = gamba.balances.user
+      if (gameState === 'playing') {
+        wagerInput = wager + totalGain //rebet with winnings
+        res = await gamba.play(bet, wagerInput, { deductFees: true })
+      } else {
+        res = await gamba.play(bet, wagerInput) //if its first bet just use inital wager
       }
 
-      const res = await gamba.play(bet, wagerInput, { deductFees: true })
       soundTick.start()
       const result = await res.result()
       const win = result.payout > 0
-      setFirstPlay(false)
+      setGameState('playing')
 
       const updatedGrid = [...grid]
       if (win) {
@@ -97,10 +111,12 @@ function Mines() {
         soundTick.stop()
         playWinSound()
         setPlaybackRate(playbackRate * pitchIncreaseFactor)
+        setCurrentMultiplierIndex(currentMultiplierIndex + 1)
+        setTotalGain(totalGain + result.payout)
       } else if (!win) {
+        setGameState('lost')
         updatedGrid[index].status = 'mine'
         revealRandomMines(updatedGrid, mines - 1, index)
-        setFirstPlay(true)
         soundTick.stop()
         soundLose.start()
         setPlaybackRate(1)
@@ -113,21 +129,21 @@ function Mines() {
     }
   }
 
-  const needsReset = firstPlay && hasClaimableBalance
+  const needsReset = gameState === 'lost'
 
   return (
     <>
       <ResponsiveSize>
         <Container>
-          <div
-            style={{
-              textAlign: 'center',
-              marginBottom: '1rem',
-              fontSize: '1.5rem',
-            }}
-          >
-            Multiplier: {multiplier.toFixed(4)}
-          </div>
+          <MultiplierWrapper>
+            {multipliers.slice(currentMultiplierIndex, currentMultiplierIndex + 4).map((mult, i) => (
+              <MultiplierCurrent key={i} isCurrent={i === 0}>
+                {mult.toFixed(3)}x
+              </MultiplierCurrent>
+            ))}
+          </MultiplierWrapper>
+
+
           {needsReset && !loading && (
             <Overlay>
               <OverlayText>
@@ -148,7 +164,7 @@ function Mines() {
         </Container>
       </ResponsiveSize>
       <ActionBar>
-        {firstPlay ? (
+        {gameState === 'idle' ? (
           <>
             <Dropdown
               value={wager}
@@ -171,21 +187,32 @@ function Mines() {
               }))}
             />
           </>
-        ) : (
+        ) : gameState === 'playing' ? (
           <div>
             <Button
               loading={claiming}
-              disabled={firstPlay || claiming || loading}
-              onClick={() => resetGame()}
+              disabled={claiming || loading}
+              onClick={claim}
             >
               Claim {formatLamports(gamba.balances.user)}
             </Button>
           </div>
-        )}
-        <Button disabled={!needsReset} onClick={resetGame}>Reset</Button>
+        ) : null}
+        {gameState === 'lost' ? (
+          <Button disabled={!needsReset || claiming || loading} onClick={reset}>Reset</Button>
+        ) : null}
       </ActionBar>
+
     </>
   )
+}
+
+function calculateMultipliers(unclickedSquares: number, mines: number) {
+  const multipliers = []
+  for (let i = 0; i < unclickedSquares; i++) {
+    multipliers[i] = 1 / ((unclickedSquares - i - mines) / (unclickedSquares - i))
+  }
+  return multipliers
 }
 
 function generateGrid() {

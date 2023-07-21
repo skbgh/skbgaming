@@ -1,4 +1,4 @@
-import { GambaModalButton } from 'gamba/react-ui'
+import { GambaConnectButton } from 'gamba/react-ui'
 import React from 'react'
 import { FaFacebook, FaDiscord, FaGithub, FaTwitter, FaInstagram } from 'react-icons/fa'
 import { TbWorldWww } from 'react-icons/tb'
@@ -83,7 +83,7 @@ export function Header() {
           <FaDiscord />
         </a>
       </Links>
-      <GambaModalButton />
+      <GambaConnectButton />
     </Wrapper>
   )
 }
