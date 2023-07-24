@@ -73,7 +73,7 @@ export function Header() {
         <a target="_blank" href="https://twitter.com/skb_nft" rel="noreferrer">
           <FaTwitter />
         </a>
-        <a target="_blank" href="https://www.instagram.com/" rel="noreferrer">
+        <a target="_blank" href="https://www.instagram.com/solkillerbunnies/" rel="noreferrer">
           <FaInstagram />
         </a>
         <a target="_blank" href="https://www.fb.com/solkillerbunnies/" rel="noreferrer">  
