@@ -46,9 +46,9 @@ function Details({ game }: {game?: GameBundle}) {
           </Section>
         ) : (
           <Section>
-            <h1>Gamba Demo</h1>
+            <h1>SKB Gaming</h1>
             <div>
-              A decentralized, provably-fair casino built on <a target="_blank" href="https://github.com/gamba-labs/gamba" rel="noreferrer">gamba</a>.
+              A decentralized, provably-fair games built on <a target="_blank" href="https://github.com/gamba-labs/gamba" rel="noreferrer">gamba</a>.
             </div>
             
           </Section>
