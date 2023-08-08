@@ -4,6 +4,7 @@ import Mines from './Mines'
 import Roulette from './Roulette'
 import Slots from './Slots'
 import HiLo from './HiLo'
+import Dice from './Dice'
 
 export const GAMES: GameBundle[] = [
   Flip,
@@ -11,4 +12,5 @@ export const GAMES: GameBundle[] = [
   Mines,
   Slots,
   HiLo,
+  Dice,
 ]
